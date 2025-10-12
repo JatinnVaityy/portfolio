@@ -1,4 +1,3 @@
-'use client';
 import React, { useEffect, useRef } from 'react';
 import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
@@ -86,18 +85,20 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
 
   return (
     <>
+   
       <div
         ref={overlayRef}
         onClick={onClose}
         className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999]"
       />
 
-     <div
-  ref={panelRef}
-  className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)] overflow-y-auto pb-10"
->
-        <div className="flex flex-col md:flex-row mt-20 gap-10 md:gap-20">
-          <div className="flex-1">
+      <div
+        ref={panelRef}
+        className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] max-w-full overflow-x-hidden bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)]"
+      >
+      
+        <div className="flex flex-col flex-1 overflow-auto gap-10 md:gap-20">
+          <div>
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
               Menu
             </h2>
@@ -107,10 +108,10 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
                   key={idx}
                   ref={(el) => (linksRef.current[idx] = el)}
                   onClick={() => handleMenuClick(link.key)}
-                  className="flex items-center space-x-3 group transition-all duration-300 text-left"
+                  className="flex items-center space-x-3 group transition-all duration-300 text-left break-words"
                 >
                   <span
-                    className="w-3 h-3 rounded-full transition-transform duration-300 group-hover:scale-125"
+                    className="w-3 h-3 rounded-full transition-transform duration-300 group-hover:scale-125 flex-shrink-0"
                     style={{ backgroundColor: link.color }}
                   />
                   <span className="text-lg sm:text-xl md:text-2xl font-semibold group-hover:text-[#32CD32] transition-all duration-300 group-hover:translate-x-2">
@@ -121,7 +122,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
             </div>
           </div>
 
-          <div className="flex-1">
+          <div>
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
               Social
             </h2>
@@ -131,11 +132,11 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
                   key={idx}
                   href={link.href}
                   ref={(el) => (iconsRef.current[idx] = el)}
-                  className="flex items-center space-x-3 group transition-transform duration-300 hover:translate-x-2"
+                  className="flex items-center space-x-3 group transition-transform duration-300 hover:translate-x-2 break-words"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <div className="text-white group-hover:text-[#32CD32] transition-all duration-300">
+                  <div className="text-white group-hover:text-[#32CD32] transition-all duration-300 flex-shrink-0">
                     {link.icon}
                   </div>
                   <span className="font-semibold text-base sm:text-lg group-hover:text-[#32CD32] transition-all duration-300">
@@ -147,27 +148,29 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
           </div>
         </div>
 
-        <div className="mt-12 flex items-center space-x-3 text-base sm:text-lg border-t border-gray-700 pt-6">
-          <MdOutlineMarkEmailRead className="text-[#32CD32]" />
-          <a
-            href="mailto:vaityjatin13@gmail.com"
-            className="hover:text-[#32CD32] transition-colors duration-300 font-medium"
-          >
-            vaityjatin13@gmail.com
-          </a>
-        </div>
+        <div className="mt-4 md:mt-6 flex-shrink-0 border-t border-gray-700 pt-4 flex flex-col gap-3">
+          <div className="flex items-center space-x-3 text-base sm:text-lg">
+            <MdOutlineMarkEmailRead className="text-[#32CD32]" />
+            <a
+              href="mailto:vaityjatin13@gmail.com"
+              className="hover:text-[#32CD32] transition-colors duration-300 font-medium break-words"
+            >
+              vaityjatin13@gmail.com
+            </a>
+          </div>
 
-        <div
-          className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
-          onClick={toggleLike}
-        >
-          <FaHeart
-            className={`w-5 h-5 transition-transform duration-200 ${
-              liked ? 'text-red-500 scale-125' : 'text-gray-400'
-            }`}
-          />
-          <span className="text-gray-400 font-medium font-impact">{likes}</span>
-          <span className="text-gray-400 font-impact">Like this portfolio</span>
+          <div
+            className="flex items-center space-x-2 cursor-pointer select-none"
+            onClick={toggleLike}
+          >
+            <FaHeart
+              className={`w-5 h-5 transition-transform duration-200 ${
+                liked ? 'text-red-500 scale-125' : 'text-gray-400'
+              }`}
+            />
+            <span className="text-gray-400 font-medium font-impact">{likes}</span>
+            <span className="text-gray-400 font-impact">Like this portfolio</span>
+          </div>
         </div>
       </div>
     </>

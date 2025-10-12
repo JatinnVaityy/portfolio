@@ -1,4 +1,3 @@
-'use client';
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import Banner from "./Banner";
@@ -193,22 +192,31 @@ function App() {
       )}
 
       <style>{`
-        ${!isMobile ? "* { cursor: none; }" : ""}
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #111; }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #32cd32, #00ff7f);
-          border-radius: 10px;
-          animation: glow-scroll 2s ease-in-out infinite alternate;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #00ff7f, #32cd32);
-        }
-        @keyframes glow-scroll {
-          0% { box-shadow: 0 0 5px #32cd32, 0 0 10px #32cd32; }
-          100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
-        }
-      `}</style>
+  ${!isMobile ? "* { cursor: none; }" : ""}
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #32cd32, #00ff7f);
+    border-radius: 10px;
+    animation: glow-scroll 2s ease-in-out infinite alternate;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00ff7f, #32cd32);
+  }
+
+  /* Hide scrollbar when overlay is open */
+  ${isMenuOpen ? `
+    ::-webkit-scrollbar { display: none; }
+    body { overflow: hidden; }
+  ` : ''}
+
+  @keyframes glow-scroll {
+    0% { box-shadow: 0 0 5px #32cd32, 0 0 10px #32cd32; }
+    100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
+  }
+`}</style>
+
     </div>
   );
 }

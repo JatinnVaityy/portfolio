@@ -1,4 +1,3 @@
-'use client';
 import React, { useRef, useEffect } from 'react';
 import { SiMongodb, SiExpress, SiReact, SiNodedotjs } from 'react-icons/si';
 import gsap from 'gsap';
