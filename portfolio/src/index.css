@@ -1,0 +1,75 @@
+@import url('https://fonts.cdnfonts.com/css/impact');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@keyframes spotlight {
+  0% {
+    top: -150%;
+  }
+  50% {
+    top: 0%;
+  }
+  100% {
+    top: 150%;
+  }
+}
+.animate-spotlight {
+  animation: spotlight 1.8s ease-in-out forwards;
+}
+
+body {
+  cursor: none;
+}
+.font-impact {
+  font-family: 'Impact', sans-serif;
+}
+.arrows {
+  width: 60px;
+  height: 72px;
+  position: absolute;
+  left: 50%;
+  margin-left: -30px;
+  bottom: 20px;
+  cursor: pointer;
+  z-index: 50;
+}
+
+.arrows path {
+  stroke: #32CD32;
+  fill: transparent;
+  stroke-width: 2px;  
+  animation: arrow 2s infinite;
+}
+
+@keyframes arrow {
+  0% {opacity:0}
+  40% {opacity:1}
+  80% {opacity:0}
+  100% {opacity:0}
+}
+
+.arrows path.a1 { animation-delay:-1s; }
+.arrows path.a2 { animation-delay:-0.5s; }
+.arrows path.a3 { animation-delay:0s; }
+
+  /* Add this to globals.css or your Banner.module.css */
+  .hire-btn {
+    @apply relative px-8 py-4 font-impact text-[1.5rem] uppercase tracking-widest border-2 border-[#32CD32] rounded overflow-hidden inline-block  ;
+  }
+
+  .hire-btn span.scan-line {
+    @apply absolute top-0 left-0 w-full h-full bg-[#32CD32] opacity-40 transform -translate-y-full;
+  }
+
+  .hire-btn:hover span.scan-line {
+    animation: scan 1s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+* { cursor: none; }
+.no-cursor, .no-cursor * {
+  cursor: none !important;
+}
