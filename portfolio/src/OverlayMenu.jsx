@@ -7,11 +7,9 @@ import gsap from 'gsap';
 import '@fontsource/montserrat/400.css';
 import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
+import leetcodeWhite from '../assets/leetcode.png';
 
-// ✅ Import your white LeetCode logo image
-import leetcodeWhite from '../assets/leetcode.png'; // adjust path if needed
-
-const OverlayMenu = ({ isOpen, onClose }) => {
+const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
   const linksRef = useRef([]);
@@ -56,11 +54,11 @@ const OverlayMenu = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const menuLinks = [
-    { name: 'Home', href: '#home', color: '#FFD700' },
-    { name: 'About Me', href: '#about', color: '#1E90FF' },
-    { name: 'Skills', href: '#skills', color: '#FF4500' },
-    { name: 'Projects', href: '#projects', color: '#8A2BE2' },
-    { name: 'Contact', href: '#contact', color: '#32CD32' },
+    { name: 'Home', key: 'Home', color: '#FFD700' },
+    { name: 'About Me', key: 'About', color: '#1E90FF' },
+    { name: 'Skills', key: 'Skills', color: '#FF4500' },
+    { name: 'Projects', key: 'Projects', color: '#8A2BE2' },
+    { name: 'Contact', key: 'Contact', color: '#32CD32' },
   ];
 
   const socialLinks = [
@@ -72,6 +70,13 @@ const OverlayMenu = ({ isOpen, onClose }) => {
       icon: <img src={leetcodeWhite} alt="LeetCode" className="w-6 h-6 invert" />,
     },
   ];
+
+  const handleMenuClick = (key) => {
+    onClose();
+    if (refs && refs[key] && refs[key].current) {
+      refs[key].current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -97,12 +102,11 @@ const OverlayMenu = ({ isOpen, onClose }) => {
             </h2>
             <div className="flex flex-col space-y-6">
               {menuLinks.map((link, idx) => (
-                <a
+                <button
                   key={idx}
                   ref={(el) => (linksRef.current[idx] = el)}
-                  href={link.href}
-                  onClick={onClose}
-                  className="flex items-center space-x-3 group transition-all duration-300"
+                  onClick={() => handleMenuClick(link.key)}
+                  className="flex items-center space-x-3 group transition-all duration-300 text-left"
                 >
                   <span
                     className="w-3 h-3 rounded-full transition-transform duration-300 group-hover:scale-125"
@@ -111,7 +115,7 @@ const OverlayMenu = ({ isOpen, onClose }) => {
                   <span className="text-lg sm:text-xl md:text-2xl font-semibold group-hover:text-[#32CD32] transition-all duration-300 group-hover:translate-x-2">
                     {link.name}
                   </span>
-                </a>
+                </button>
               ))}
             </div>
           </div>

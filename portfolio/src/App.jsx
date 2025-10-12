@@ -7,13 +7,24 @@ import { Cross as Hamburger } from "hamburger-react";
 import About from "./About";
 import Skills from "./Skills";
 import Projects from "./Projects";
-import Footer from "./Footer";  
+import Footer from "./Footer";
+
 function App() {
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const preloaderRef = useRef(null);
   const svgRef = useRef(null);
   const scrollbarRef = useRef(null);
+
+  // Refs for all sections
+  const sectionRefs = {
+    Home: useRef(null),
+    About: useRef(null),
+    Skills: useRef(null),
+    Projects: useRef(null),
+    Contact: useRef(null),
+  };
+
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;
 
@@ -103,18 +114,31 @@ function App() {
       </div>
 
       {/* Overlay Menu */}
-      <OverlayMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <OverlayMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        refs={sectionRefs} // Pass all section refs
+      />
 
-      {/* Banner always shows */}
-      <Banner id="home"/>
+      {/* Banner */}
+      <div ref={sectionRefs.Home}>
+        <Banner />
+      </div>
 
-      {/* Only render About & Skills after preloader is done */}
       {!loading && (
         <>
-<About id="about" />
-<Skills id="skills" />
-<Projects id="projects" />
-<Footer id="contact" />
+          <div ref={sectionRefs.About}>
+            <About />
+          </div>
+          <div ref={sectionRefs.Skills}>
+            <Skills />
+          </div>
+          <div ref={sectionRefs.Projects}>
+            <Projects />
+          </div>
+          <div ref={sectionRefs.Contact}>
+            <Footer />
+          </div>
         </>
       )}
 
