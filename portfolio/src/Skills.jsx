@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { SiMongodb } from 'react-icons/si';
-
+import { SiFirebase, SiMaterialui } from 'react-icons/si';
 gsap.registerPlugin(ScrollTrigger);
 
 const MY_STACK = {
@@ -17,17 +17,17 @@ const MY_STACK = {
     { name: 'GSAP', icon: '/logo/gsap.png' },
     { name: 'Framer Motion', icon: '/logo/framer-motion.png' },
     { name: 'Bootstrap', icon: '/logo/bootstrap.svg' },
+    { name: 'Material-UI', icon: SiMaterialui }, 
   ],
   backend: [
     { name: 'Node.js', icon: '/logo/node.png' },
-    { name: 'NestJS', icon: '/logo/nest.svg' },
     { name: 'Express.js', icon: '/logo/express.png' },
   ],
   database: [
     { name: 'MySQL', icon: '/logo/mysql.svg' },
     { name: 'PostgreSQL', icon: '/logo/postgreSQL.png' },
     { name: 'MongoDB', icon: 'mongodb' },
-    { name: 'Prisma', icon: '/logo/prisma.png' },
+      { name: 'Firebase', icon: SiFirebase }, 
   ],
   tools: [
     { name: 'Git', icon: '/logo/git.png' },
