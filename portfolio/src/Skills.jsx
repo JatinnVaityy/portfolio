@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { SiMongodb } from 'react-icons/si';
-import { SiFirebase, SiMaterialui,SiPostman, SiVisualstudiocode } from 'react-icons/si';
+import { SiFirebase, SiMui ,SiPostman} from 'react-icons/si';
 gsap.registerPlugin(ScrollTrigger);
 
 const MY_STACK = {
@@ -17,7 +17,8 @@ const MY_STACK = {
     { name: 'GSAP', icon: '/logo/gsap.png' },
     { name: 'Framer Motion', icon: '/logo/framer-motion.png' },
     { name: 'Bootstrap', icon: '/logo/bootstrap.svg' },
-    { name: 'Material-UI', icon: SiMaterialui }, 
+ { name: 'Material-UI', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg' },
+  
   ],
   backend: [
     { name: 'Node.js', icon: '/logo/node.png' },
@@ -27,14 +28,16 @@ const MY_STACK = {
     { name: 'MySQL', icon: '/logo/mysql.svg' },
     { name: 'PostgreSQL', icon: '/logo/postgreSQL.png' },
     { name: 'MongoDB', icon: 'mongodb' },
-      { name: 'Firebase', icon: SiFirebase }, 
+ { name: 'Firebase', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg' },
   ],
   tools: [
     { name: 'Git', icon: '/logo/git.png' },
     { name: 'Docker', icon: '/logo/docker.svg' },
     { name: 'AWS', icon: '/logo/aws.png' },
-     { name: 'Postman', icon: SiPostman },
-    { name: 'VS Code', icon: SiVisualstudiocode },
+        { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg' },
+        { name: 'VS Code', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
+
+ 
   ],
 };
 
