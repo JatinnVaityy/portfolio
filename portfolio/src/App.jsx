@@ -28,38 +28,46 @@ function App() {
 
   const API_BASE = "https://portfolio-twym.onrender.com";
 
-  // Fetch likes from backend on mount
-  useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/likes`);
-        setLikes(res.data.likes || 0);
+useEffect(() => {
+  // Generate or get deviceId
+  let deviceId = localStorage.getItem("deviceId");
+  if (!deviceId) {
+    deviceId = crypto.randomUUID(); // modern browsers
+    localStorage.setItem("deviceId", deviceId);
+  }
 
-        const localLiked = localStorage.getItem("liked") === "true";
-        setLiked(localLiked);
-      } catch (err) {
-        console.error("Failed to fetch likes:", err);
-      }
-    };
-    fetchLikes();
-  }, []);
+  // Fetch likes from backend
+  const fetchLikes = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/likes`);
+      setLikes(res.data.likes || 0);
+
+      const localLiked = localStorage.getItem("liked") === "true";
+      setLiked(localLiked);
+    } catch (err) {
+      console.error("Failed to fetch likes:", err);
+    }
+  };
+
+  fetchLikes();
+}, []);
 const toggleLike = async () => {
   try {
-    const action = liked ? "unlike" : "like";
-    
-    // Send request to backend first
-    const res = await axios.post(`${API_BASE}/like`, { action });
+    const deviceId = localStorage.getItem("deviceId");
+    if (!deviceId) throw new Error("Device ID not found");
 
-    // Update frontend with backend count
+    const action = liked ? "unlike" : "like";
+
+    const res = await axios.post(`${API_BASE}/like`, { action, deviceId });
+
     setLikes(res.data.likes);
     setLiked(!liked);
-
-    // Save like status locally
     localStorage.setItem("liked", !liked ? "true" : "false");
   } catch (err) {
     console.error("Failed to toggle like:", err);
   }
 };
+
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;

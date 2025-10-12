@@ -103,8 +103,8 @@ const Footer = ({ likes, liked, toggleLike }) => {
                 liked ? "text-red-500 scale-125 animate-pulse" : "text-gray-400"
               }`}
             />
-            <span className="font-medium">{likes}</span>
-            <span className="hidden sm:inline">Like this portfolio</span>
+            <span className="text-gray-400 font-impact">{likes}</span>
+            <span className="text-gray-400 font-impact">Like this portfolio</span>
           </div>
 
           {/* Copyright */}

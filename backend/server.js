@@ -3,6 +3,7 @@ const cors = require("cors");
 const fs = require("fs").promises;
 const path = require("path");
 const bodyParser = require("body-parser");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const PORT = 5000;
@@ -17,15 +18,18 @@ const initLikesFile = async () => {
   try {
     await fs.access(DATA_FILE);
   } catch {
-    await fs.writeFile(DATA_FILE, JSON.stringify({ likes: 0 }, null, 2));
+    await fs.writeFile(
+      DATA_FILE,
+      JSON.stringify({ likes: [], count: 0 }, null, 2)
+    );
   }
 };
 
-// GET current likes
+// GET current likes count
 app.get("/likes", async (req, res) => {
   try {
-    const data = await fs.readFile(DATA_FILE, "utf-8");
-    res.json(JSON.parse(data));
+    const data = JSON.parse(await fs.readFile(DATA_FILE, "utf-8"));
+    res.json({ likes: data.count || 0 });
   } catch (err) {
     console.error("Error reading likes.json:", err);
     res.status(500).json({ error: "Failed to read likes" });
@@ -34,23 +38,26 @@ app.get("/likes", async (req, res) => {
 
 // POST toggle like
 app.post("/like", async (req, res) => {
-  const { action } = req.body; // expects "like" or "unlike"
-  if (!action || !["like", "unlike"].includes(action)) {
-    return res.status(400).json({ error: "Invalid action" });
+  const { action, deviceId } = req.body;
+  if (!action || !["like", "unlike"].includes(action) || !deviceId) {
+    return res.status(400).json({ error: "Invalid request" });
   }
 
   try {
-    const fileData = await fs.readFile(DATA_FILE, "utf-8");
-    const data = JSON.parse(fileData);
+    const fileData = JSON.parse(await fs.readFile(DATA_FILE, "utf-8"));
+    const likesSet = new Set(fileData.likes);
 
-    if (action === "like") {
-      data.likes += 1;
-    } else if (action === "unlike" && data.likes > 0) {
-      data.likes -= 1;
-    }
+    if (action === "like") likesSet.add(deviceId);
+    else likesSet.delete(deviceId);
 
-    await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
-    res.json(data);
+    const newLikes = Array.from(likesSet);
+    const count = newLikes.length;
+
+    await fs.writeFile(
+      DATA_FILE,
+      JSON.stringify({ likes: newLikes, count }, null, 2)
+    );
+    res.json({ likes: count });
   } catch (err) {
     console.error("Error updating likes.json:", err);
     res.status(500).json({ error: "Failed to update likes" });
