@@ -26,14 +26,20 @@ function App() {
     Contact: useRef(null),
   };
 
+  useEffect(() => {
+    const savedLiked = localStorage.getItem("liked");
+    const savedLikes = localStorage.getItem("likes");
+    if (savedLiked) setLiked(JSON.parse(savedLiked));
+    if (savedLikes) setLikes(Number(savedLikes));
+  }, []);
+
   const toggleLike = () => {
-    if (liked) {
-      setLikes(prev => prev - 1);
-      setLiked(false);
-    } else {
-      setLikes(prev => prev + 1);
-      setLiked(true);
-    }
+    const newLiked = !liked;
+    const newLikes = newLiked ? likes + 1 : likes - 1;
+    setLiked(newLiked);
+    setLikes(newLikes);
+    localStorage.setItem("liked", JSON.stringify(newLiked));
+    localStorage.setItem("likes", newLikes.toString());
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -94,8 +100,7 @@ function App() {
       const scrollTop = window.scrollY;
       const docHeight = document.body.scrollHeight - window.innerHeight;
       const scrollPercent = scrollTop / docHeight;
-
-      const scrollbarHeight = window.innerHeight * 0.2; // small scrollbar
+      const scrollbarHeight = window.innerHeight * 0.2;
       const maxTop = window.innerHeight - scrollbarHeight;
       scrollbarRef.current.style.top = `${scrollPercent * maxTop}px`;
     };
@@ -106,19 +111,17 @@ function App() {
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-   
+  
       <div className="fixed top-6 right-6 z-[1200]">
-        <div className="no-cursor">
-          <Hamburger
-            toggled={isMenuOpen}
-            toggle={setIsMenuOpen}
-            color="#FFFFFF"
-            size={26}
-            duration={0.6}
-            easing="ease-in-out"
-            label="Show menu"
-          />
-        </div>
+        <Hamburger
+          toggled={isMenuOpen}
+          toggle={setIsMenuOpen}
+          color="#FFFFFF"
+          size={26}
+          duration={0.6}
+          easing="ease-in-out"
+          label="Show menu"
+        />
       </div>
 
       <OverlayMenu
@@ -130,27 +133,15 @@ function App() {
         toggleLike={toggleLike}
       />
 
-      <div ref={sectionRefs.Home}>
-        <Banner />
-      </div>
+      <div ref={sectionRefs.Home}><Banner /></div>
 
       {!loading && (
         <>
-          <div ref={sectionRefs.About}>
-            <About />
-          </div>
-          <div ref={sectionRefs.Skills}>
-            <Skills />
-          </div>
-          <div ref={sectionRefs.Projects}>
-            <Projects />
-          </div>
+          <div ref={sectionRefs.About}><About /></div>
+          <div ref={sectionRefs.Skills}><Skills /></div>
+          <div ref={sectionRefs.Projects}><Projects /></div>
           <div ref={sectionRefs.Contact}>
-            <Footer
-              likes={likes}
-              liked={liked}
-              toggleLike={toggleLike}
-            />
+            <Footer likes={likes} liked={liked} toggleLike={toggleLike} />
           </div>
         </>
       )}
@@ -193,17 +184,16 @@ function App() {
           />
         </svg>
       )}
-
       {isMobile && (
         <div
           ref={scrollbarRef}
           className="fixed right-2 w-1 rounded bg-green-500 opacity-50 z-[3000]"
           style={{ height: '20vh', transition: 'top 0.1s linear' }}
-        ></div>
+        />
       )}
 
       <style>{`
-        * { cursor: none; }
+        ${!isMobile ? "* { cursor: none; }" : ""}
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb {
