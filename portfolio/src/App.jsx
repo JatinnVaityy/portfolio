@@ -27,44 +27,45 @@ function App() {
   };
 
   const API_BASE = "https://portfolio-twym.onrender.com";
-// Fetch likes from backend on mount
-useEffect(() => {
-  const fetchLikes = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/likes`);
-      setLikes(res.data.likes || 0);
 
-      // Check localStorage if this device already liked
-      const localLiked = localStorage.getItem("liked") === "true";
-      setLiked(localLiked);
+  // Fetch likes from backend on mount
+  useEffect(() => {
+    const fetchLikes = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/likes`);
+        setLikes(res.data.likes || 0);
+
+        const localLiked = localStorage.getItem("liked") === "true";
+        setLiked(localLiked);
+      } catch (err) {
+        console.error("Failed to fetch likes:", err);
+      }
+    };
+    fetchLikes();
+  }, []);
+
+  // Toggle like function
+  const toggleLike = async () => {
+    try {
+      if (!liked) setLikes((prev) => prev + 1);
+      else setLikes((prev) => (prev > 0 ? prev - 1 : 0));
+
+      const action = liked ? "unlike" : "like";
+      setLiked(!liked);
+      localStorage.setItem("liked", !liked ? "true" : "false");
+
+      await axios.post(`${API_BASE}/like`, { action });
     } catch (err) {
-      console.error("Failed to fetch likes:", err);
+      console.error("Failed to toggle like:", err);
+      setLiked((prev) => !prev);
+      setLikes((prev) => (liked ? prev + 1 : prev - 1));
     }
   };
-  fetchLikes();
-}, []);
-
-// Toggle like function
-const toggleLike = async () => {
-  try {
-    // Prevent multiple likes from same device
-    if (liked) return;
-
-    const res = await axios.post(`${API_BASE}/like`, { action: "like" });
-    setLikes(res.data.likes);
-    setLiked(true);
-
-    // Save liked status in localStorage
-    localStorage.setItem("liked", "true");
-  } catch (err) {
-    console.error("Failed to toggle like:", err);
-  }
-};
-
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;
 
+  // Mouse-follow SVG
   useEffect(() => {
     if (isMobile) return;
     const handleMouseMove = (e) => {
@@ -81,6 +82,7 @@ const toggleLike = async () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isMobile]);
 
+  // Preloader animation
   useEffect(() => {
     const tl = gsap.timeline({
       defaults: { ease: "power4.out" },
@@ -113,6 +115,7 @@ const toggleLike = async () => {
     tl.to(preloaderRef.current, { autoAlpha: 0, duration: 0.4 });
   }, [barCount]);
 
+  // Mobile scrollbar
   useEffect(() => {
     if (!isMobile || !scrollbarRef.current) return;
 
@@ -131,6 +134,7 @@ const toggleLike = async () => {
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
+      {/* Hamburger menu */}
       <div className="fixed top-6 right-6 z-[1200]">
         <Hamburger
           toggled={isMenuOpen}
@@ -144,17 +148,16 @@ const toggleLike = async () => {
       </div>
 
       <OverlayMenu
-  isOpen={isMenuOpen}
-  onClose={() => setIsMenuOpen(false)}
-  refs={sectionRefs}
-  likes={likes}
-  liked={liked}
-  toggleLike={toggleLike}
-/>
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        refs={sectionRefs}
+        likes={likes}
+        liked={liked}
+        toggleLike={toggleLike}
+      />
 
-
+      {/* Sections */}
       <div ref={sectionRefs.Home}><Banner /></div>
-
       {!loading && (
         <>
           <div ref={sectionRefs.About}><About /></div>
@@ -166,6 +169,7 @@ const toggleLike = async () => {
         </>
       )}
 
+      {/* Preloader */}
       {loading && (
         <div className="fixed inset-0 z-[2000] flex flex-col" ref={preloaderRef}>
           <div className="flex flex-1">
@@ -187,6 +191,7 @@ const toggleLike = async () => {
         </div>
       )}
 
+      {/* Mouse SVG */}
       {!isMobile && (
         <svg
           width="27"
@@ -204,6 +209,8 @@ const toggleLike = async () => {
           />
         </svg>
       )}
+
+      {/* Mobile scrollbar */}
       {isMobile && (
         <div
           ref={scrollbarRef}
@@ -212,8 +219,13 @@ const toggleLike = async () => {
         />
       )}
 
+      {/* Global styles */}
       <style>{`
-        ${!isMobile ? "* { cursor: none; }" : ""}
+        /* Hide cursor globally except interactive elements */
+        ${!isMobile ? `
+          *:not(button):not(a) { cursor: none; }
+          .hamburger-react { cursor: pointer !important; }
+        ` : ""}
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #111; }
@@ -236,7 +248,6 @@ const toggleLike = async () => {
           100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
         }
       `}</style>
-
     </div>
   );
 }

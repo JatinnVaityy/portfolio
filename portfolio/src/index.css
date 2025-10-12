@@ -73,3 +73,6 @@ body {
 .no-cursor, .no-cursor * {
   cursor: none !important;
 }
+.hamburger-react {
+  cursor: pointer !important;
+}
