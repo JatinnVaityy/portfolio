@@ -64,10 +64,17 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
     { name: 'Github', href: 'https://github.com/JatinnVaityy/', icon: <FaGithub className="w-6 h-6 text-white" /> },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/in/jatin-vaity-8691bb286/', icon: <FaLinkedin className="w-6 h-6 text-white" /> },
     {
-      name: 'LeetCode',
-      href: 'https://leetcode.com/u/JatinVaity/',
-      icon: <img src={leetcodeWhite} alt="LeetCode" className="w-6 h-6 invert" />,
-    },
+  name: 'LeetCode',
+  href: 'https://leetcode.com/u/JatinVaity/',
+  icon: (
+    <img
+      src={leetcodeWhite}
+      alt="LeetCode"
+      className="w-6 h-6"
+      style={{ filter: 'invert(0)' }} 
+    />
+  ),
+}
   ];
 
   const handleMenuClick = (key) => {
