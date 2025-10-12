@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { SiMongodb } from 'react-icons/si';
-import { SiFirebase, SiMaterialui } from 'react-icons/si';
+import { SiFirebase, SiMaterialui,SiPostman, SiVisualstudiocode } from 'react-icons/si';
 gsap.registerPlugin(ScrollTrigger);
 
 const MY_STACK = {
@@ -33,6 +33,8 @@ const MY_STACK = {
     { name: 'Git', icon: '/logo/git.png' },
     { name: 'Docker', icon: '/logo/docker.svg' },
     { name: 'AWS', icon: '/logo/aws.png' },
+     { name: 'Postman', icon: SiPostman },
+    { name: 'VS Code', icon: SiVisualstudiocode },
   ],
 };
 
