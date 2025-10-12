@@ -71,7 +71,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
       src={leetcodeWhite}
       alt="LeetCode"
       className="w-6 h-6"
-      style={{ filter: 'invert(0)' }} 
+      style={{ filter: 'brightness(0) invert(1)' }} 
     />
   ),
 }
