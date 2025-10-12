@@ -42,7 +42,7 @@ function App() {
     fetchLikes();
   }, []);
 
-  const toggleLike = async () => {
+ const toggleLike = async () => {
   try {
     const action = liked ? "unlike" : "like"; 
     const res = await axios.post(`${API_BASE}/like`, { action });
@@ -135,13 +135,14 @@ function App() {
       </div>
 
       <OverlayMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        refs={sectionRefs}
-        likes={likes}
-        liked={liked}
-        toggleLike={toggleLike}
-      />
+  isOpen={isMenuOpen}
+  onClose={() => setIsMenuOpen(false)}
+  refs={sectionRefs}
+  likes={likes}
+  liked={liked}
+  toggleLike={toggleLike}
+/>
+
 
       <div ref={sectionRefs.Home}><Banner /></div>
 

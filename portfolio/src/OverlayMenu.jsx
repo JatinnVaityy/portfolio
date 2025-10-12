@@ -9,9 +9,9 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import leetcodeWhite from '../assets/leetcode.png';
 
-const API_BASE = '  ';
+const API_BASE = 'https://portfolio-twym.onrender.com';
 
-const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, setLikes, setLiked }) => {
+const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
   const linksRef = useRef([]);
@@ -171,18 +171,11 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, setLikes, setLiked }
           </a>
         </div>
 
-        <div
-          className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
-          onClick={handleLike}
-        >
-          <FaHeart
-            className={`w-5 h-5 transition-transform duration-200 ${
-              liked ? 'text-red-500 scale-125' : 'text-gray-400'
-            }`}
-          />
-          <span className="text-gray-400 font-medium font-impact">{likes}</span>
-          <span className="text-gray-400 font-impact">Like this portfolio</span>
-        </div>
+        <div onClick={toggleLike} className="mt-6 flex items-center space-x-2 cursor-pointer select-none">
+    <FaHeart className={`w-5 h-5 transition-transform duration-200 ${liked ? 'text-red-500 scale-125' : 'text-gray-400'}`} />
+    <span className="text-gray-400 font-medium font-impact">{likes}</span>
+    <span className="text-gray-400 font-impact">Like this portfolio</span>
+  </div>
       </div>
     </>
   );

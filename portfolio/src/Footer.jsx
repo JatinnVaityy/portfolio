@@ -13,7 +13,7 @@ import axios from "axios";
 
 const API_BASE = "https://portfolio-twym.onrender.com";
 
-const Footer = ({ likes, liked, setLikes, setLiked }) => {
+const Footer = ({ likes, liked, toggleLike }) => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -105,19 +105,11 @@ const Footer = ({ likes, liked, setLikes, setLiked }) => {
             ))}
           </div>
 
-          {/* Like button */}
-          <div
-            className="flex items-center space-x-2 cursor-pointer select-none"
-            onClick={handleLike}
-          >
-            <FaHeart
-              className={`w-5 h-5 transition-transform duration-200 ${
-                liked ? "text-red-500 scale-125" : "text-gray-400"
-              }`}
-            />
-            <span className="text-gray-400 font-medium">{likes}</span>
-            <span className="text-gray-400">Like this portfolio</span>
-          </div>
+           <div onClick={toggleLike} className="flex items-center space-x-2 cursor-pointer select-none">
+    <FaHeart className={`w-5 h-5 transition-transform duration-200 ${liked ? 'text-red-500 scale-125' : 'text-gray-400'}`} />
+    <span className="text-gray-400 font-medium">{likes}</span>
+    <span className="text-gray-400">Like this portfolio</span>
+  </div>
 
           <div className="flex flex-col sm:flex-row items-center text-gray-400 text-sm space-y-3 sm:space-y-0 sm:space-x-6 text-center sm:text-left font-sans">
             <span>© {currentYear} Jatin Vaity. All Rights Reserved.</span>
