@@ -92,10 +92,10 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
         className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999]"
       />
 
-      <div
-        ref={panelRef}
-        className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)]"
-      >
+     <div
+  ref={panelRef}
+  className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)] overflow-y-auto pb-10"
+>
         <div className="flex flex-col md:flex-row mt-20 gap-10 md:gap-20">
           <div className="flex-1">
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
