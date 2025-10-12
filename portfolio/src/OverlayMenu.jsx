@@ -86,7 +86,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
       refs[key].current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
+
   return (
     <>
       <div
@@ -161,9 +161,13 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
         </div>
 
         <div onClick={toggleLike} className="mt-6 flex items-center space-x-2 cursor-pointer select-none">
-    <FaHeart className={`w-5 h-5 transition-transform duration-200 ${liked ? 'text-red-500 scale-125' : 'text-gray-400'}`} />
-    <span className="text-gray-400 font-medium font-impact">{likes}</span>
-    <span className="text-gray-400 font-impact">Like this portfolio</span>
+<FaHeart
+    className={`w-5 h-5 transition-transform duration-300 ${
+      liked ? 'text-red-500 scale-125 animate-pulse' : 'text-gray-400'
+    }`}
+  />
+  <span className="text-gray-400 font-medium">{likes}</span>
+  <span className="text-gray-400">Like this portfolio</span>
   </div>
       </div>
     </>
