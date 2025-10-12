@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/montserrat": "^5.2.8",
     "@gsap/react": "^2.1.2",
+    "axios": "^1.12.2",
     "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",
     "hamburger-react": "^2.5.2",
