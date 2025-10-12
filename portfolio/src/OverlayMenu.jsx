@@ -161,17 +161,20 @@
 
           {/* Like Button */}
           <div
-            onClick={toggleLike}
-            className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
-          >
-            <FaHeart
-              className={`w-5 h-5 transition-transform duration-300 ${
-                liked ? 'text-red-500 scale-125 animate-pulse' : 'text-gray-400'
-              }`}
-            />
-            <span className="text-gray-400 font-impact">{likes}</span>
-            <span className="text-gray-400 font-impact">Like this portfolio</span>
-          </div>
+  onClick={toggleLike}
+  className="flex items-center gap-2 cursor-pointer select-none"
+>
+  <FaHeart
+    className={`w-5 h-5 ${liked ? "text-pink-500" : "text-gray-400"}`}
+  />
+  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
+    {likes}
+  </span>
+  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
+    Like this portfolio
+  </span>
+</div>
+
         </div>
       </>
     );

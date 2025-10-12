@@ -95,17 +95,20 @@ const Footer = ({ likes, liked, toggleLike }) => {
 
           {/* Like Button */}
           <div
-            onClick={toggleLike}
-            className="flex items-center gap-2 cursor-pointer select-none text-gray-400 hover:text-red-500 transition-colors duration-300"
-          >
-            <FaHeart
-              className={`w-5 h-5 transition-transform duration-300 ${
-                liked ? "text-red-500 scale-125 animate-pulse" : "text-gray-400"
-              }`}
-            />
-            <span className="text-gray-400 font-impact">{likes}</span>
-            <span className="text-gray-400 font-impact">Like this portfolio</span>
-          </div>
+  onClick={toggleLike}
+  className="flex items-center gap-2 cursor-pointer select-none"
+>
+  <FaHeart
+    className={`w-5 h-5 ${liked ? "text-pink-500" : "text-gray-400"}`}
+  />
+  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
+    {likes}
+  </span>
+  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
+    Like this portfolio
+  </span>
+</div>
+
 
           {/* Copyright */}
           <div className="flex flex-col sm:flex-row items-center text-gray-400 text-sm space-y-3 sm:space-y-0 sm:space-x-6 text-center sm:text-left font-sans">
