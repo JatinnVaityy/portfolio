@@ -43,14 +43,15 @@ function App() {
   }, []);
 
   const toggleLike = async () => {
-    try {
-      const res = await axios.post(`${API_BASE}/likes`);
-      setLikes(res.data.likes);
-      setLiked(res.data.liked);
-    } catch (err) {
-      console.error("Failed to toggle like:", err);
-    }
-  };
+  try {
+    const action = liked ? "unlike" : "like"; 
+    const res = await axios.post(`${API_BASE}/like`, { action });
+    setLikes(res.data.likes);
+    setLiked(!liked);
+  } catch (err) {
+    console.error("Failed to toggle like:", err);
+  }
+};
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;

@@ -9,7 +9,7 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import leetcodeWhite from '../assets/leetcode.png';
 
-const API_BASE = 'https://portfolio-twym.onrender.com';
+const API_BASE = '  ';
 
 const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, setLikes, setLiked }) => {
   const overlayRef = useRef(null);
