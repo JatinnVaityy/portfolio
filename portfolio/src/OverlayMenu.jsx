@@ -86,18 +86,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
       refs[key].current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  const handleLike = async () => {
-  try {
-    const action = liked ? "unlike" : "like"; // toggle
-    const res = await axios.post(`${API_BASE}/like`, { action });
-    setLikes(res.data.likes);
-    setLiked(!liked);
-  } catch (err) {
-    console.error("Failed to toggle like:", err);
-  }
-};
-
+  
   return (
     <>
       <div

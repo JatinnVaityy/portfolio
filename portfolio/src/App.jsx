@@ -27,31 +27,40 @@ function App() {
   };
 
   const API_BASE = "https://portfolio-twym.onrender.com";
+// Fetch likes from backend on mount
+useEffect(() => {
+  const fetchLikes = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/likes`);
+      setLikes(res.data.likes || 0);
 
-  // Fetch likes from backend on mount
-  useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/likes`);
-        setLikes(res.data.likes || 0);
-        setLiked(res.data.liked || false);
-      } catch (err) {
-        console.error("Failed to fetch likes:", err);
-      }
-    };
-    fetchLikes();
-  }, []);
+      // Check localStorage if this device already liked
+      const localLiked = localStorage.getItem("liked") === "true";
+      setLiked(localLiked);
+    } catch (err) {
+      console.error("Failed to fetch likes:", err);
+    }
+  };
+  fetchLikes();
+}, []);
 
- const toggleLike = async () => {
+// Toggle like function
+const toggleLike = async () => {
   try {
-    const action = liked ? "unlike" : "like"; 
-    const res = await axios.post(`${API_BASE}/like`, { action });
+    // Prevent multiple likes from same device
+    if (liked) return;
+
+    const res = await axios.post(`${API_BASE}/like`, { action: "like" });
     setLikes(res.data.likes);
-    setLiked(!liked);
+    setLiked(true);
+
+    // Save liked status in localStorage
+    localStorage.setItem("liked", "true");
   } catch (err) {
     console.error("Failed to toggle like:", err);
   }
 };
+
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;

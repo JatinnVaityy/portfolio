@@ -34,17 +34,6 @@ const Footer = ({ likes, liked, toggleLike }) => {
     },
   ];
 
-  // Handle like button click
-  const handleLike = async () => {
-  try {
-    const action = liked ? "unlike" : "like"; // toggle
-    const res = await axios.post(`${API_BASE}/like`, { action });
-    setLikes(res.data.likes);
-    setLiked(!liked);
-  } catch (err) {
-    console.error("Failed to toggle like:", err);
-  }
-};
 
   return (
     <footer className="bg-[#2f2f2f] text-white font-[Impact,sans-serif] relative overflow-hidden">
