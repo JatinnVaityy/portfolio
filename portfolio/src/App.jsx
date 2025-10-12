@@ -25,42 +25,25 @@ function App() {
     Contact: useRef(null),
   };
 
-  // Fetch likes from backend
-  const fetchLikes = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/likes");
-      const data = await res.json();
-      setLikes(data.likes);
-    } catch (err) {
-      console.error("Failed to fetch likes:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchLikes();
+    const savedLiked = localStorage.getItem("liked");
+    const savedLikes = localStorage.getItem("likes");
+    if (savedLiked) setLiked(JSON.parse(savedLiked));
+    if (savedLikes) setLikes(Number(savedLikes));
   }, []);
 
-  // Toggle like/unlike
-  const toggleLike = async () => {
-    try {
-      const action = liked ? "unlike" : "like";
-      const res = await fetch("http://localhost:5000/like", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action }),
-      });
-      const data = await res.json();
-      setLikes(data.likes);
-      setLiked(!liked);
-    } catch (err) {
-      console.error("Failed to update likes:", err);
-    }
+  const toggleLike = () => {
+    const newLiked = !liked;
+    const newLikes = newLiked ? likes + 1 : likes - 1;
+    setLiked(newLiked);
+    setLikes(newLikes);
+    localStorage.setItem("liked", JSON.stringify(newLiked));
+    localStorage.setItem("likes", newLikes.toString());
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;
 
-  // Mouse pointer animation for desktop
   useEffect(() => {
     if (isMobile) return;
     const handleMouseMove = (e) => {
@@ -77,7 +60,6 @@ function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isMobile]);
 
-  // Preloader animation
   useEffect(() => {
     const tl = gsap.timeline({
       defaults: { ease: "power4.out" },
@@ -110,7 +92,6 @@ function App() {
     tl.to(preloaderRef.current, { autoAlpha: 0, duration: 0.4 });
   }, [barCount]);
 
-  // Mobile scrollbar
   useEffect(() => {
     if (!isMobile || !scrollbarRef.current) return;
 
@@ -129,7 +110,7 @@ function App() {
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-      {/* Hamburger */}
+  
       <div className="fixed top-6 right-6 z-[1200]">
         <Hamburger
           toggled={isMenuOpen}
@@ -142,7 +123,6 @@ function App() {
         />
       </div>
 
-      {/* Overlay Menu */}
       <OverlayMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -152,8 +132,8 @@ function App() {
         toggleLike={toggleLike}
       />
 
-      {/* Sections */}
       <div ref={sectionRefs.Home}><Banner /></div>
+
       {!loading && (
         <>
           <div ref={sectionRefs.About}><About /></div>
@@ -165,7 +145,6 @@ function App() {
         </>
       )}
 
-      {/* Preloader */}
       {loading && (
         <div className="fixed inset-0 z-[2000] flex flex-col" ref={preloaderRef}>
           <div className="flex flex-1">
@@ -176,6 +155,7 @@ function App() {
               />
             ))}
           </div>
+
           <p className="name-text flex text-[18vw] sm:text-[12vw] lg:text-[160px] font-impact font-normal text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none tracking-[0.15em] text-white">
             {"JATIN".split("").map((ch, i) => (
               <span key={i} className="overflow-hidden inline-block">
@@ -186,7 +166,6 @@ function App() {
         </div>
       )}
 
-      {/* Custom Cursor */}
       {!isMobile && (
         <svg
           width="27"
@@ -204,8 +183,6 @@ function App() {
           />
         </svg>
       )}
-
-      {/* Mobile Scrollbar */}
       {isMobile && (
         <div
           ref={scrollbarRef}
@@ -213,6 +190,33 @@ function App() {
           style={{ height: '20vh', transition: 'top 0.1s linear' }}
         />
       )}
+
+      <style>{`
+  ${!isMobile ? "* { cursor: none; }" : ""}
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #32cd32, #00ff7f);
+    border-radius: 10px;
+    animation: glow-scroll 2s ease-in-out infinite alternate;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #00ff7f, #32cd32);
+  }
+
+  /* Hide scrollbar when overlay is open */
+  ${isMenuOpen ? `
+    ::-webkit-scrollbar { display: none; }
+    body { overflow: hidden; }
+  ` : ''}
+
+  @keyframes glow-scroll {
+    0% { box-shadow: 0 0 5px #32cd32, 0 0 10px #32cd32; }
+    100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
+  }
+`}</style>
+
     </div>
   );
 }
