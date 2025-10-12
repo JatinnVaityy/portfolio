@@ -7,6 +7,7 @@ import About from "./About";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import Footer from "./Footer";
+import axios from "axios";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -25,20 +26,30 @@ function App() {
     Contact: useRef(null),
   };
 
+  const API_BASE = "https://portfolio-twym.onrender.com";
+
+  // Fetch likes from backend on mount
   useEffect(() => {
-    const savedLiked = localStorage.getItem("liked");
-    const savedLikes = localStorage.getItem("likes");
-    if (savedLiked) setLiked(JSON.parse(savedLiked));
-    if (savedLikes) setLikes(Number(savedLikes));
+    const fetchLikes = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/likes`);
+        setLikes(res.data.likes || 0);
+        setLiked(res.data.liked || false);
+      } catch (err) {
+        console.error("Failed to fetch likes:", err);
+      }
+    };
+    fetchLikes();
   }, []);
 
-  const toggleLike = () => {
-    const newLiked = !liked;
-    const newLikes = newLiked ? likes + 1 : likes - 1;
-    setLiked(newLiked);
-    setLikes(newLikes);
-    localStorage.setItem("liked", JSON.stringify(newLiked));
-    localStorage.setItem("likes", newLikes.toString());
+  const toggleLike = async () => {
+    try {
+      const res = await axios.post(`${API_BASE}/likes`);
+      setLikes(res.data.likes);
+      setLiked(res.data.liked);
+    } catch (err) {
+      console.error("Failed to toggle like:", err);
+    }
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -110,7 +121,6 @@ function App() {
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-  
       <div className="fixed top-6 right-6 z-[1200]">
         <Hamburger
           toggled={isMenuOpen}
@@ -192,30 +202,29 @@ function App() {
       )}
 
       <style>{`
-  ${!isMobile ? "* { cursor: none; }" : ""}
+        ${!isMobile ? "* { cursor: none; }" : ""}
 
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #111; }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #32cd32, #00ff7f);
-    border-radius: 10px;
-    animation: glow-scroll 2s ease-in-out infinite alternate;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #00ff7f, #32cd32);
-  }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #32cd32, #00ff7f);
+          border-radius: 10px;
+          animation: glow-scroll 2s ease-in-out infinite alternate;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #00ff7f, #32cd32);
+        }
 
-  /* Hide scrollbar when overlay is open */
-  ${isMenuOpen ? `
-    ::-webkit-scrollbar { display: none; }
-    body { overflow: hidden; }
-  ` : ''}
+        ${isMenuOpen ? `
+          ::-webkit-scrollbar { display: none; }
+          body { overflow: hidden; }
+        ` : ''}
 
-  @keyframes glow-scroll {
-    0% { box-shadow: 0 0 5px #32cd32, 0 0 10px #32cd32; }
-    100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
-  }
-`}</style>
+        @keyframes glow-scroll {
+          0% { box-shadow: 0 0 5px #32cd32, 0 0 10px #32cd32; }
+          100% { box-shadow: 0 0 15px #00ff7f, 0 0 25px #32cd32; }
+        }
+      `}</style>
 
     </div>
   );

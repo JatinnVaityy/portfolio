@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+'use client';
+import React, { useEffect } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -7,9 +8,12 @@ import {
   FaMapMarkerAlt,
   FaHeart,
 } from "react-icons/fa";
-import leetcodeWhite from "../assets/leetcode.png"; 
+import leetcodeWhite from "../assets/leetcode.png";
+import axios from "axios";
 
-const Footer = ({ likes, liked, toggleLike }) => {
+const API_BASE = "https://portfolio-twym.onrender.com";
+
+const Footer = ({ likes, liked, setLikes, setLiked }) => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -29,6 +33,18 @@ const Footer = ({ likes, liked, toggleLike }) => {
       icon: <img src={leetcodeWhite} alt="LeetCode" className="w-6 h-6 invert" />,
     },
   ];
+
+  // Handle like button click
+  const handleLike = async () => {
+  try {
+    const action = liked ? "unlike" : "like"; // toggle
+    const res = await axios.post(`${API_BASE}/like`, { action });
+    setLikes(res.data.likes);
+    setLiked(!liked);
+  } catch (err) {
+    console.error("Failed to toggle like:", err);
+  }
+};
 
   return (
     <footer className="bg-[#2f2f2f] text-white font-[Impact,sans-serif] relative overflow-hidden">
@@ -89,9 +105,10 @@ const Footer = ({ likes, liked, toggleLike }) => {
             ))}
           </div>
 
+          {/* Like button */}
           <div
             className="flex items-center space-x-2 cursor-pointer select-none"
-            onClick={toggleLike}
+            onClick={handleLike}
           >
             <FaHeart
               className={`w-5 h-5 transition-transform duration-200 ${

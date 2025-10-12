@@ -3,12 +3,15 @@ import React, { useEffect, useRef } from 'react';
 import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import gsap from 'gsap';
+import axios from 'axios';
 import '@fontsource/montserrat/400.css';
 import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import leetcodeWhite from '../assets/leetcode.png';
 
-const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
+const API_BASE = 'https://portfolio-twym.onrender.com';
+
+const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, setLikes, setLiked }) => {
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
   const linksRef = useRef([]);
@@ -84,6 +87,17 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
     }
   };
 
+  const handleLike = async () => {
+  try {
+    const action = liked ? "unlike" : "like"; // toggle
+    const res = await axios.post(`${API_BASE}/like`, { action });
+    setLikes(res.data.likes);
+    setLiked(!liked);
+  } catch (err) {
+    console.error("Failed to toggle like:", err);
+  }
+};
+
   return (
     <>
       <div
@@ -92,10 +106,10 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
         className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999]"
       />
 
-     <div
-  ref={panelRef}
-  className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)] overflow-y-auto pb-10"
->
+      <div
+        ref={panelRef}
+        className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)] overflow-y-auto pb-10"
+      >
         <div className="flex flex-col md:flex-row mt-20 gap-10 md:gap-20">
           <div className="flex-1">
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
@@ -159,7 +173,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
 
         <div
           className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
-          onClick={toggleLike}
+          onClick={handleLike}
         >
           <FaHeart
             className={`w-5 h-5 transition-transform duration-200 ${

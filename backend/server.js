@@ -22,9 +22,13 @@ app.get("/likes", (req, res) => {
   res.json(data);
 });
 
-// POST toggle like (increment or decrement)
+// POST toggle like
 app.post("/like", (req, res) => {
-  const { action } = req.body; // "like" or "unlike"
+  const { action } = req.body; // expects "like" or "unlike"
+  if (!action || !["like", "unlike"].includes(action)) {
+    return res.status(400).json({ error: "Invalid action" });
+  }
+
   const data = JSON.parse(fs.readFileSync(DATA_FILE));
 
   if (action === "like") data.likes += 1;
