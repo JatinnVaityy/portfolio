@@ -40,7 +40,6 @@ const MY_STACK = {
 const Skills = () => {
   const containerRef = useRef(null);
 
-  // Section heading animation (like About Me)
   useGSAP(() => {
     if (!containerRef.current) return;
     gsap.from('.skills-heading', {
@@ -56,7 +55,6 @@ const Skills = () => {
     });
   }, { scope: containerRef });
 
-  // Slide-up animation for categories and skill items
   useGSAP(() => {
     const elements = containerRef.current?.querySelectorAll('.slide-up');
     if (!elements?.length) return;
@@ -84,7 +82,7 @@ const Skills = () => {
       className="relative py-32 bg-[#2f2f2f] text-white overflow-hidden font-montserrat"
     >
       <div className="container mx-auto px-6 md:px-12">
-        {/* Section Title */}
+      
         <h2
           className="skills-heading text-4xl md:text-5xl mb-6 tracking-wide font-normal"
           style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}
@@ -97,7 +95,7 @@ const Skills = () => {
         <div className="space-y-28">
           {Object.entries(MY_STACK).map(([category, items]) => (
             <div className="grid md:grid-cols-12 gap-12 items-center" key={category}>
-              {/* Category title */}
+            
               <div className="md:col-span-5">
                 <p
                   className="slide-up text-4xl md:text-5xl mb-4"
@@ -107,7 +105,6 @@ const Skills = () => {
                 </p>
               </div>
 
-              {/* Skill items */}
               <div className="md:col-span-7 flex flex-wrap gap-8">
                 {items.map((item) => (
                   <div

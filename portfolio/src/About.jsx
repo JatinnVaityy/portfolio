@@ -8,8 +8,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const containerRef = useRef(null);
-
-  // Animate heading (same pattern as Skills.jsx)
   useGSAP(() => {
     if (!containerRef.current) return;
 
@@ -25,8 +23,6 @@ const About = () => {
       ease: 'power3.out',
     });
   }, { scope: containerRef });
-
-  // Animate divider and text elements with slide-up effect
   useGSAP(() => {
     const elements = containerRef.current?.querySelectorAll('.slide-up');
     if (!elements?.length) return;
@@ -53,7 +49,7 @@ const About = () => {
       className="min-h-screen flex items-center bg-[#2f2f2f] text-white font-montserrat relative overflow-hidden"
     >
       <div className="container mx-auto px-6 md:px-12">
-        {/* Heading */}
+    
         <h2
           className="about-heading text-4xl md:text-5xl mb-6 tracking-wide font-normal"
           style={{ fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' }}
@@ -61,12 +57,9 @@ const About = () => {
           About <span className="text-[#32CD32]">Me</span>
         </h2>
 
-        {/* Divider */}
         <div className="slide-up h-[3px] w-28 bg-[#32CD32] mb-12 rounded about-divider"></div>
-
-        {/* Grid */}
         <div className="grid md:grid-cols-12 gap-12 items-start">
-          {/* Left intro */}
+      
           <div className="md:col-span-5 flex items-center">
             <p
               className="slide-up text-5xl md:text-6xl leading-snug font-normal"
@@ -75,8 +68,6 @@ const About = () => {
               Hi, I&apos;m <span className="text-[#32CD32]">Jatin Vaity.</span>
             </p>
           </div>
-
-          {/* Right paragraph */}
           <div className="md:col-span-7 flex flex-col justify-center">
             <div className="max-w-[600px] space-y-6 text-gray-300 leading-relaxed text-lg md:text-xl">
               <p className="slide-up">

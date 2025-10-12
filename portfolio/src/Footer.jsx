@@ -1,15 +1,16 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
+  FaHeart,
 } from "react-icons/fa";
 import leetcodeWhite from "../assets/leetcode.png"; 
 
-const Footer = () => {
+const Footer = ({ likes, liked, toggleLike }) => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -33,9 +34,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#2f2f2f] text-white font-[Impact,sans-serif] relative overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Top Section */}
         <div className="py-14 flex flex-col md:flex-row justify-between gap-10">
-          {/* Brand Section */}
           <div className="max-w-lg text-center md:text-left">
             <h2
               className="text-4xl md:text-5xl mb-3 tracking-wide text-white"
@@ -60,7 +59,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Contact Info */}
           <div className="space-y-3 text-gray-300 text-sm md:text-base text-center md:text-left font-sans">
             <div className="flex justify-center md:justify-start items-center gap-2">
               <FaEnvelope className="text-[#32CD32]" /> vaityjatin13@gmail.com
@@ -74,12 +72,9 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[#3a3a3a] mb-8"></div>
 
-        {/* Bottom Section */}
         <div className="pb-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          {/* Social Links */}
           <div className="flex items-center space-x-4">
             {socialLinks.map((social, i) => (
               <a
@@ -95,7 +90,19 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* Copyright */}
+          <div
+            className="flex items-center space-x-2 cursor-pointer select-none"
+            onClick={toggleLike}
+          >
+            <FaHeart
+              className={`w-5 h-5 transition-transform duration-200 ${
+                liked ? "text-red-500 scale-125" : "text-gray-400"
+              }`}
+            />
+            <span className="text-gray-400 font-medium">{likes}</span>
+            <span className="text-gray-400">Like this portfolio</span>
+          </div>
+
           <div className="flex flex-col sm:flex-row items-center text-gray-400 text-sm space-y-3 sm:space-y-0 sm:space-x-6 text-center sm:text-left font-sans">
             <span>© {currentYear} Jatin Vaity. All Rights Reserved.</span>
           </div>

@@ -12,11 +12,12 @@ import Footer from "./Footer";
 function App() {
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
   const preloaderRef = useRef(null);
   const svgRef = useRef(null);
   const scrollbarRef = useRef(null);
 
-  // Refs for all sections
   const sectionRefs = {
     Home: useRef(null),
     About: useRef(null),
@@ -25,10 +26,19 @@ function App() {
     Contact: useRef(null),
   };
 
+  const toggleLike = () => {
+    if (liked) {
+      setLikes(prev => prev - 1);
+      setLiked(false);
+    } else {
+      setLikes(prev => prev + 1);
+      setLiked(true);
+    }
+  };
+
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;
 
-  // Custom Cursor
   useEffect(() => {
     if (isMobile) return;
     const handleMouseMove = (e) => {
@@ -45,7 +55,6 @@ function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isMobile]);
 
-  // Preloader Animation
   useEffect(() => {
     const tl = gsap.timeline({
       defaults: { ease: "power4.out" },
@@ -78,7 +87,6 @@ function App() {
     tl.to(preloaderRef.current, { autoAlpha: 0, duration: 0.4 });
   }, [barCount]);
 
-  // Mobile scrollbar
   useEffect(() => {
     if (!isMobile || !scrollbarRef.current) return;
 
@@ -98,7 +106,7 @@ function App() {
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-      {/* Hamburger Icon */}
+   
       <div className="fixed top-6 right-6 z-[1200]">
         <div className="no-cursor">
           <Hamburger
@@ -113,14 +121,15 @@ function App() {
         </div>
       </div>
 
-      {/* Overlay Menu */}
       <OverlayMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        refs={sectionRefs} // Pass all section refs
+        refs={sectionRefs}
+        likes={likes}
+        liked={liked}
+        toggleLike={toggleLike}
       />
 
-      {/* Banner */}
       <div ref={sectionRefs.Home}>
         <Banner />
       </div>
@@ -137,12 +146,15 @@ function App() {
             <Projects />
           </div>
           <div ref={sectionRefs.Contact}>
-            <Footer />
+            <Footer
+              likes={likes}
+              liked={liked}
+              toggleLike={toggleLike}
+            />
           </div>
         </>
       )}
 
-      {/* Preloader */}
       {loading && (
         <div className="fixed inset-0 z-[2000] flex flex-col" ref={preloaderRef}>
           <div className="flex flex-1">
@@ -164,7 +176,6 @@ function App() {
         </div>
       )}
 
-      {/* Custom Cursor */}
       {!isMobile && (
         <svg
           width="27"
@@ -183,7 +194,6 @@ function App() {
         </svg>
       )}
 
-      {/* Mobile Custom Scrollbar */}
       {isMobile && (
         <div
           ref={scrollbarRef}
@@ -192,7 +202,6 @@ function App() {
         ></div>
       )}
 
-      {/* Scrollbar Styling for desktop */}
       <style>{`
         * { cursor: none; }
         ::-webkit-scrollbar { width: 6px; }

@@ -43,7 +43,6 @@ const Projects = () => {
   const containerRef = useRef(null);
   const tl = useRef(null);
 
-  // Smooth infinite marquee
   useEffect(() => {
     const track = marqueeRef.current;
     if (!track) return;
@@ -51,7 +50,6 @@ const Projects = () => {
     const cards = Array.from(track.children);
     const totalWidth = cards.reduce((acc, c) => acc + c.offsetWidth + 16, 0);
 
-    // Duplicate cards for seamless loop
     cards.forEach((c) => track.appendChild(c.cloneNode(true)));
     track.style.width = `${totalWidth * 2}px`;
 
@@ -65,11 +63,9 @@ const Projects = () => {
     return () => tl.current?.kill();
   }, []);
 
-  // Pause/resume marquee
   const handlePause = () => tl.current?.pause();
   const handleResume = () => tl.current?.resume();
 
-  // Scroll animations (reverse on scroll up)
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.projects-heading', {
@@ -107,7 +103,7 @@ const Projects = () => {
       className="relative bg-[#2f2f2f] text-white py-16 sm:py-24 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12">
-        {/* Title */}
+      
         <div className="text-center sm:text-left mb-10">
           <h2
             className="projects-heading text-4xl sm:text-5xl font-medium tracking-wide"
@@ -120,7 +116,6 @@ const Projects = () => {
           <div className="projects-divider w-28 h-[3px] bg-[#32CD32] mt-3 rounded-full mx-auto sm:mx-0"></div>
         </div>
 
-        {/* Marquee */}
         <div
           className="relative overflow-hidden"
           onMouseEnter={handlePause}
@@ -134,14 +129,13 @@ const Projects = () => {
                 key={i}
                 className="project-card group relative flex-shrink-0 w-[250px] sm:w-[300px] md:w-[360px] lg:w-[400px] h-[360px] sm:h-[420px] md:h-[460px] rounded-3xl overflow-hidden shadow-lg border border-[#3a3a3a] hover:border-[#32CD32] transition-all duration-300 bg-[#1e1e1e] flex flex-col justify-center items-center"
               >
-                {/* Image */}
+              
                 <img
                   src={p.img}
                   alt={p.name}
                   className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-500 group-hover:scale-105"
                 />
 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 sm:p-6 rounded-3xl">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg sm:text-xl font-impact text-[#32CD32] pr-2 leading-tight">
@@ -166,7 +160,6 @@ const Projects = () => {
             ))}
           </div>
 
-          {/* Side Gradients */}
           <div className="pointer-events-none absolute top-0 left-0 h-full w-16 sm:w-24 bg-gradient-to-r from-[#2f2f2f] via-[#2f2f2f]/95 to-transparent" />
           <div className="pointer-events-none absolute top-0 right-0 h-full w-16 sm:w-24 bg-gradient-to-l from-[#2f2f2f] via-[#2f2f2f]/95 to-transparent" />
         </div>

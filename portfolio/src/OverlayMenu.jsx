@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import gsap from 'gsap';
 import '@fontsource/montserrat/400.css';
@@ -9,7 +8,7 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import leetcodeWhite from '../assets/leetcode.png';
 
-const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
+const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
   const linksRef = useRef([]);
@@ -80,22 +79,20 @@ const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
 
   return (
     <>
-      {/* Backdrop */}
+
       <div
         ref={overlayRef}
         onClick={onClose}
         className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999]"
       />
 
-      {/* Panel */}
       <div
         ref={panelRef}
         className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)]"
       >
 
-        {/* Menu + Social */}
         <div className="flex flex-col md:flex-row mt-20 gap-10 md:gap-20">
-          {/* Menu */}
+        
           <div className="flex-1">
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
               Menu
@@ -120,7 +117,6 @@ const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
             </div>
           </div>
 
-          {/* Social */}
           <div className="flex-1">
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
               Social
@@ -147,7 +143,7 @@ const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
           </div>
         </div>
 
-        {/* Email Contact */}
+       
         <div className="mt-12 flex items-center space-x-3 text-base sm:text-lg border-t border-gray-700 pt-6">
           <MdOutlineMarkEmailRead className="text-[#32CD32]" />
           <a
@@ -156,6 +152,20 @@ const OverlayMenu = ({ isOpen, onClose, scrollToSection, refs }) => {
           >
             vaityjatin13@gmail.com
           </a>
+        </div>
+
+      
+        <div
+          className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
+          onClick={toggleLike}
+        >
+          <FaHeart
+            className={`w-5 h-5 transition-transform duration-200 ${
+              liked ? "text-red-500 scale-125" : "text-gray-400"
+            }`}
+          />
+          <span className="text-gray-400 font-medium">{likes}</span>
+          <span className="text-gray-400">Like this portfolio</span>
         </div>
       </div>
     </>
