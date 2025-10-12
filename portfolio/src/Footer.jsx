@@ -93,21 +93,18 @@ const Footer = ({ likes, liked, toggleLike }) => {
             ))}
           </div>
 
-          {/* Like Button */}
-          <div
+    {/* Like Button */}
+<div
   onClick={toggleLike}
   className="flex items-center gap-2 cursor-pointer select-none"
 >
   <FaHeart
     className={`w-5 h-5 ${liked ? "text-pink-500" : "text-gray-400"}`}
   />
-  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
-    {likes}
-  </span>
-  <span className={`${liked ? "text-pink-500" : "text-gray-400"} font-impact`}>
-    Like this portfolio
-  </span>
+  <span className="text-gray-400 font-impact">{likes}</span>
+  <span className="text-gray-400 font-impact">Like this portfolio</span>
 </div>
+
 
 
           {/* Copyright */}
