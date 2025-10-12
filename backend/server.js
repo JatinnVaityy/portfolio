@@ -1,72 +1,56 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs").promises;
-const path = require("path");
-const bodyParser = require("body-parser");
-const { v4: uuidv4 } = require("uuid");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import Like from "./models/Like.js";
+
+dotenv.config(); // Load .env variables
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-const DATA_FILE = path.join(__dirname, "likes.json");
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// Initialize likes.json if it doesn't exist
-const initLikesFile = async () => {
-  try {
-    await fs.access(DATA_FILE);
-  } catch {
-    await fs.writeFile(
-      DATA_FILE,
-      JSON.stringify({ likes: [], count: 0 }, null, 2)
-    );
-  }
-};
-
-// GET current likes count
+// Get likes
 app.get("/likes", async (req, res) => {
   try {
-    const data = JSON.parse(await fs.readFile(DATA_FILE, "utf-8"));
-    res.json({ likes: data.count || 0 });
-  } catch (err) {
-    console.error("Error reading likes.json:", err);
-    res.status(500).json({ error: "Failed to read likes" });
-  }
-});
-
-// POST toggle like
-app.post("/like", async (req, res) => {
-  const { action, deviceId } = req.body;
-  if (!action || !["like", "unlike"].includes(action) || !deviceId) {
-    return res.status(400).json({ error: "Invalid request" });
-  }
-
-  try {
-    const fileData = JSON.parse(await fs.readFile(DATA_FILE, "utf-8"));
-    const likesSet = new Set(fileData.likes);
-
-    if (action === "like") likesSet.add(deviceId);
-    else likesSet.delete(deviceId);
-
-    const newLikes = Array.from(likesSet);
-    const count = newLikes.length;
-
-    await fs.writeFile(
-      DATA_FILE,
-      JSON.stringify({ likes: newLikes, count }, null, 2)
-    );
+    const count = await Like.countDocuments();
     res.json({ likes: count });
   } catch (err) {
-    console.error("Error updating likes.json:", err);
-    res.status(500).json({ error: "Failed to update likes" });
+    res.status(500).json({ error: "Failed to fetch likes" });
   }
 });
 
-// Start server
-initLikesFile().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+// Like / Unlike
+app.post("/like", async (req, res) => {
+  const { action, deviceId } = req.body;
+
+  if (!deviceId) return res.status(400).json({ error: "Missing deviceId" });
+
+  try {
+    if (action === "like") {
+      const existing = await Like.findOne({ deviceId });
+      if (!existing) await Like.create({ deviceId });
+    } else if (action === "unlike") {
+      await Like.deleteOne({ deviceId });
+    }
+
+    const count = await Like.countDocuments();
+    res.json({ likes: count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update like" });
+  }
 });
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
