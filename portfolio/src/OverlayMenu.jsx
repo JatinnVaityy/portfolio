@@ -167,7 +167,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
             }`}
           />
           <span className="text-gray-400 font-medium">{likes}</span>
-          <span className="text-gray-400">Like this portfolio</span>
+          <span className="text-gray-400 font-impact">Like this portfolio</span>
         </div>
       </div>
     </>
