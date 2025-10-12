@@ -16,37 +16,37 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
 
   useEffect(() => {
     if (isOpen) {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
       tl.fromTo(
         overlayRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.4, ease: 'power1.out' }
+        { opacity: 1, duration: 0.5, ease: 'power1.out' }
       );
 
       tl.fromTo(
         panelRef.current,
         { x: '100%', opacity: 0 },
-        { x: '0%', opacity: 1, duration: 0.6, ease: 'power4.out' },
+        { x: '0%', opacity: 1, duration: 0.7, ease: 'power3.out' },
         '<'
       );
 
       tl.fromTo(
         linksRef.current,
-        { x: 50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.6, stagger: 0.1, delay: 0.1 },
-        '-=0.3'
+        { x: 60, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power3.out' },
+        '-=0.4'
       );
 
       tl.fromTo(
         iconsRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)' },
-        '-=0.4'
+        { y: 30, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'back.out(1.5)' },
+        '-=0.5'
       );
     } else {
-      gsap.to(panelRef.current, { x: '100%', opacity: 0, duration: 0.5, ease: 'power3.in' });
-      gsap.to(overlayRef.current, { opacity: 0, duration: 0.4, ease: 'power1.in' });
+      gsap.to(panelRef.current, { x: '100%', opacity: 0, duration: 0.6, ease: 'power3.inOut' });
+      gsap.to(overlayRef.current, { opacity: 0, duration: 0.5, ease: 'power1.inOut' });
     }
   }, [isOpen]);
 
@@ -64,17 +64,17 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
     { name: 'Github', href: 'https://github.com/JatinnVaityy/', icon: <FaGithub className="w-6 h-6 text-white" /> },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/in/jatin-vaity-8691bb286/', icon: <FaLinkedin className="w-6 h-6 text-white" /> },
     {
-  name: 'LeetCode',
-  href: 'https://leetcode.com/u/JatinVaity/',
-  icon: (
-    <img
-      src={leetcodeWhite}
-      alt="LeetCode"
-      className="w-6 h-6"
-      style={{ filter: 'brightness(0) invert(1)' }} 
-    />
-  ),
-}
+      name: 'LeetCode',
+      href: 'https://leetcode.com/u/JatinVaity/',
+      icon: (
+        <img
+          src={leetcodeWhite}
+          alt="LeetCode"
+          className="w-6 h-6"
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
+      ),
+    },
   ];
 
   const handleMenuClick = (key) => {
@@ -86,7 +86,6 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
 
   return (
     <>
-
       <div
         ref={overlayRef}
         onClick={onClose}
@@ -97,9 +96,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
         ref={panelRef}
         className="fixed top-0 right-0 h-full w-full sm:w-[80%] md:w-[50%] bg-[#0b0b0b] z-[1000] flex flex-col p-6 md:p-10 text-white font-montserrat shadow-[0_0_30px_rgba(50,205,50,0.2)]"
       >
-
         <div className="flex flex-col md:flex-row mt-20 gap-10 md:gap-20">
-        
           <div className="flex-1">
             <h2 className="text-gray-400 uppercase tracking-[0.2em] mb-6 text-sm sm:text-base">
               Menu
@@ -150,7 +147,6 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
           </div>
         </div>
 
-       
         <div className="mt-12 flex items-center space-x-3 text-base sm:text-lg border-t border-gray-700 pt-6">
           <MdOutlineMarkEmailRead className="text-[#32CD32]" />
           <a
@@ -161,14 +157,13 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
           </a>
         </div>
 
-      
         <div
           className="mt-6 flex items-center space-x-2 cursor-pointer select-none"
           onClick={toggleLike}
         >
           <FaHeart
             className={`w-5 h-5 transition-transform duration-200 ${
-              liked ? "text-red-500 scale-125" : "text-gray-400"
+              liked ? 'text-red-500 scale-125' : 'text-gray-400'
             }`}
           />
           <span className="text-gray-400 font-medium">{likes}</span>
