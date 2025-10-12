@@ -43,24 +43,23 @@ function App() {
     };
     fetchLikes();
   }, []);
+const toggleLike = async () => {
+  try {
+    const action = liked ? "unlike" : "like";
+    
+    // Send request to backend first
+    const res = await axios.post(`${API_BASE}/like`, { action });
 
-  // Toggle like function
-  const toggleLike = async () => {
-    try {
-      if (!liked) setLikes((prev) => prev + 1);
-      else setLikes((prev) => (prev > 0 ? prev - 1 : 0));
+    // Update frontend with backend count
+    setLikes(res.data.likes);
+    setLiked(!liked);
 
-      const action = liked ? "unlike" : "like";
-      setLiked(!liked);
-      localStorage.setItem("liked", !liked ? "true" : "false");
-
-      await axios.post(`${API_BASE}/like`, { action });
-    } catch (err) {
-      console.error("Failed to toggle like:", err);
-      setLiked((prev) => !prev);
-      setLikes((prev) => (liked ? prev + 1 : prev - 1));
-    }
-  };
+    // Save like status locally
+    localStorage.setItem("liked", !liked ? "true" : "false");
+  } catch (err) {
+    console.error("Failed to toggle like:", err);
+  }
+};
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const barCount = isMobile ? 6 : 10;
