@@ -166,7 +166,7 @@ const OverlayMenu = ({ isOpen, onClose, refs, likes, liked, toggleLike }) => {
               liked ? 'text-red-500 scale-125' : 'text-gray-400'
             }`}
           />
-          <span className="text-gray-400 font-medium">{likes}</span>
+          <span className="text-gray-400 font-medium font-impact">{likes}</span>
           <span className="text-gray-400 font-impact">Like this portfolio</span>
         </div>
       </div>
