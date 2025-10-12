@@ -1,26 +1,33 @@
 'use client';
 import React from "react";
 import {
-  FaTwitter,
-  FaInstagram,
-  FaFacebookF,
-  FaLinkedinIn,
+  FaGithub,
+  FaLinkedin,
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import leetcodeWhite from "../assets/leetcode.png"; 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { name: 'Github', href: 'https://github.com/JatinnVaityy/', icon: <FaGithub className="w-6 h-6 text-white" /> },
-        { name: 'LinkedIn', href: 'https://www.linkedin.com/in/jatin-vaity-8691bb286/', icon: <FaLinkedin className="w-6 h-6 text-white" /> },
-        {
-          name: 'LeetCode',
-          href: 'https://leetcode.com/u/JatinVaity/',
-          icon: <img src={leetcodeWhite} alt="LeetCode" className="w-6 h-6 invert" />,
-        },
+    {
+      name: "Github",
+      href: "https://github.com/JatinnVaityy/",
+      icon: <FaGithub className="w-6 h-6 text-white" />,
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/jatin-vaity-8691bb286/",
+      icon: <FaLinkedin className="w-6 h-6 text-white" />,
+    },
+    {
+      name: "LeetCode",
+      href: "https://leetcode.com/u/JatinVaity/",
+      icon: <img src={leetcodeWhite} alt="LeetCode" className="w-6 h-6 invert" />,
+    },
   ];
 
   return (
@@ -83,7 +90,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="text-lg">{social.icon}</span>
+                {social.icon}
               </a>
             ))}
           </div>

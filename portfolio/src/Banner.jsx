@@ -3,7 +3,7 @@
   import { SiMongodb, SiExpress, SiReact, SiNodedotjs } from 'react-icons/si';
   import gsap from 'gsap';
 
-  const Banner = () => {
+  const Banner = ( ) => {
     const containerRef = useRef(null);
     const iconsRef = useRef([]);
     const hireBtnRef = useRef(null);

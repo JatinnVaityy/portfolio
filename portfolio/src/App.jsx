@@ -106,15 +106,15 @@ function App() {
       <OverlayMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
       {/* Banner always shows */}
-      <Banner />
+      <Banner id="home"/>
 
       {/* Only render About & Skills after preloader is done */}
       {!loading && (
         <>
-          <About />
-          <Skills />
-          <Projects/>
-          <Footer/>
+<About id="about" />
+<Skills id="skills" />
+<Projects id="projects" />
+<Footer id="contact" />
         </>
       )}
 
